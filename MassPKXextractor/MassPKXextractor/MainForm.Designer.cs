@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.TX_Output = new System.Windows.Forms.TextBox();
+            this.TB_Input = new System.Windows.Forms.TextBox();
             this.TB_Output = new System.Windows.Forms.TextBox();
             this.lb_input = new System.Windows.Forms.Label();
             this.lb_output = new System.Windows.Forms.Label();
@@ -37,12 +37,12 @@
             this.Btn_Output = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // TX_Output
+            // TB_Input
             // 
-            this.TX_Output.Location = new System.Drawing.Point(60, 12);
-            this.TX_Output.Name = "TX_Output";
-            this.TX_Output.Size = new System.Drawing.Size(250, 20);
-            this.TX_Output.TabIndex = 0;
+            this.TB_Input.Location = new System.Drawing.Point(60, 12);
+            this.TB_Input.Name = "TB_Input";
+            this.TB_Input.Size = new System.Drawing.Size(250, 20);
+            this.TB_Input.TabIndex = 0;
             // 
             // TB_Output
             // 
@@ -77,6 +77,7 @@
             this.Btn_Input.TabIndex = 3;
             this.Btn_Input.Text = "Browse...";
             this.Btn_Input.UseVisualStyleBackColor = true;
+            this.Btn_Input.Click += new System.EventHandler(this.Btn_Input_Click);
             // 
             // Btn_Output
             // 
@@ -86,6 +87,7 @@
             this.Btn_Output.TabIndex = 3;
             this.Btn_Output.Text = "Browse...";
             this.Btn_Output.UseVisualStyleBackColor = true;
+            this.Btn_Output.Click += new System.EventHandler(this.Btn_Output_Click);
             // 
             // MainForm
             // 
@@ -99,7 +101,7 @@
             this.Controls.Add(this.lb_output);
             this.Controls.Add(this.lb_input);
             this.Controls.Add(this.TB_Output);
-            this.Controls.Add(this.TX_Output);
+            this.Controls.Add(this.TB_Input);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -112,7 +114,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox TX_Output;
+        private System.Windows.Forms.TextBox TB_Input;
         private System.Windows.Forms.TextBox TB_Output;
         private System.Windows.Forms.Label lb_input;
         private System.Windows.Forms.Label lb_output;
