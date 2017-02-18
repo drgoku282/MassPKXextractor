@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.TB_Input = new System.Windows.Forms.TextBox();
             this.TB_Output = new System.Windows.Forms.TextBox();
@@ -35,6 +36,11 @@
             this.lb_output = new System.Windows.Forms.Label();
             this.Btn_Input = new System.Windows.Forms.Button();
             this.Btn_Output = new System.Windows.Forms.Button();
+            this.btn_Start = new System.Windows.Forms.Button();
+            this.CB_Recursive = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.CB_Box = new System.Windows.Forms.CheckBox();
+            this.CB_File = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // TB_Input
@@ -46,7 +52,7 @@
             // 
             // TB_Output
             // 
-            this.TB_Output.Location = new System.Drawing.Point(60, 38);
+            this.TB_Output.Location = new System.Drawing.Point(60, 41);
             this.TB_Output.Name = "TB_Output";
             this.TB_Output.Size = new System.Drawing.Size(250, 20);
             this.TB_Output.TabIndex = 1;
@@ -63,7 +69,7 @@
             // lb_output
             // 
             this.lb_output.AutoSize = true;
-            this.lb_output.Location = new System.Drawing.Point(12, 41);
+            this.lb_output.Location = new System.Drawing.Point(12, 44);
             this.lb_output.Name = "lb_output";
             this.lb_output.Size = new System.Drawing.Size(42, 13);
             this.lb_output.TabIndex = 2;
@@ -81,7 +87,7 @@
             // 
             // Btn_Output
             // 
-            this.Btn_Output.Location = new System.Drawing.Point(316, 36);
+            this.Btn_Output.Location = new System.Drawing.Point(316, 39);
             this.Btn_Output.Name = "Btn_Output";
             this.Btn_Output.Size = new System.Drawing.Size(75, 23);
             this.Btn_Output.TabIndex = 3;
@@ -89,13 +95,65 @@
             this.Btn_Output.UseVisualStyleBackColor = true;
             this.Btn_Output.Click += new System.EventHandler(this.Btn_Output_Click);
             // 
+            // btn_Start
+            // 
+            this.btn_Start.Location = new System.Drawing.Point(316, 68);
+            this.btn_Start.Name = "btn_Start";
+            this.btn_Start.Size = new System.Drawing.Size(75, 23);
+            this.btn_Start.TabIndex = 4;
+            this.btn_Start.Text = "Start";
+            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            // 
+            // CB_Recursive
+            // 
+            this.CB_Recursive.AutoSize = true;
+            this.CB_Recursive.Location = new System.Drawing.Point(15, 72);
+            this.CB_Recursive.Name = "CB_Recursive";
+            this.CB_Recursive.Size = new System.Drawing.Size(74, 17);
+            this.CB_Recursive.TabIndex = 5;
+            this.CB_Recursive.Text = "Recursive";
+            this.toolTip1.SetToolTip(this.CB_Recursive, "When checked, it will search for Save Files in every\r\nsub-folder of the Input fol" +
+        "der.");
+            this.CB_Recursive.UseVisualStyleBackColor = true;
+            // 
+            // CB_Box
+            // 
+            this.CB_Box.AutoSize = true;
+            this.CB_Box.Location = new System.Drawing.Point(209, 72);
+            this.CB_Box.Name = "CB_Box";
+            this.CB_Box.Size = new System.Drawing.Size(101, 17);
+            this.CB_Box.TabIndex = 9;
+            this.CB_Box.Text = "Separate Boxes";
+            this.toolTip1.SetToolTip(this.CB_Box, "When checked, it will create an additional folder for\r\neach Save File and then on" +
+        "e folder for each box.\r\n");
+            this.CB_Box.UseVisualStyleBackColor = true;
+            this.CB_Box.CheckedChanged += new System.EventHandler(this.CB_Box_CheckedChanged);
+            // 
+            // CB_File
+            // 
+            this.CB_File.AutoSize = true;
+            this.CB_File.Location = new System.Drawing.Point(102, 72);
+            this.CB_File.Name = "CB_File";
+            this.CB_File.Size = new System.Drawing.Size(93, 17);
+            this.CB_File.TabIndex = 9;
+            this.CB_File.Text = "Separate Files";
+            this.toolTip1.SetToolTip(this.CB_File, "When checked, it will create an additional folder for\r\neach Save File in the Outp" +
+        "ut folder.");
+            this.CB_File.UseVisualStyleBackColor = true;
+            this.CB_File.CheckedChanged += new System.EventHandler(this.CB_File_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(412, 76);
+            this.ClientSize = new System.Drawing.Size(404, 103);
+            this.Controls.Add(this.CB_File);
+            this.Controls.Add(this.CB_Box);
+            this.Controls.Add(this.CB_Recursive);
+            this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.Btn_Output);
             this.Controls.Add(this.Btn_Input);
             this.Controls.Add(this.lb_output);
@@ -121,6 +179,11 @@
         private System.Windows.Forms.Label lb_output;
         private System.Windows.Forms.Button Btn_Input;
         private System.Windows.Forms.Button Btn_Output;
+        private System.Windows.Forms.Button btn_Start;
+        private System.Windows.Forms.CheckBox CB_Recursive;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox CB_Box;
+        private System.Windows.Forms.CheckBox CB_File;
     }
 }
 
