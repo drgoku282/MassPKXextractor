@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.TX_Output = new System.Windows.Forms.TextBox();
             this.TB_Output = new System.Windows.Forms.TextBox();
             this.lb_input = new System.Windows.Forms.Label();
@@ -99,6 +100,7 @@
             this.Controls.Add(this.lb_input);
             this.Controls.Add(this.TB_Output);
             this.Controls.Add(this.TX_Output);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 6, 6);
