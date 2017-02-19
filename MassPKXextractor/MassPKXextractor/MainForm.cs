@@ -228,7 +228,7 @@ namespace MassPKXextractor
         {
             if (Worker.IsBusy)
             {
-                DialogResult result = MessageBox.Show("There is a extraction operation in progress, do you want to enforce it to stop?", "Stop operation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("There is a extraction operation in progress, do you want to close the application?", "Close?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     SaveSettings();
