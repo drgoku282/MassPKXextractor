@@ -36,11 +36,14 @@
             this.lb_output = new System.Windows.Forms.Label();
             this.Btn_Input = new System.Windows.Forms.Button();
             this.Btn_Output = new System.Windows.Forms.Button();
-            this.btn_Start = new System.Windows.Forms.Button();
+            this.Btn_Start = new System.Windows.Forms.Button();
             this.CB_Recursive = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.CB_Box = new System.Windows.Forms.CheckBox();
             this.CB_File = new System.Windows.Forms.CheckBox();
+            this.Worker = new System.ComponentModel.BackgroundWorker();
+            this.Btn_Stop = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // TB_Input
@@ -95,15 +98,15 @@
             this.Btn_Output.UseVisualStyleBackColor = true;
             this.Btn_Output.Click += new System.EventHandler(this.Btn_Output_Click);
             // 
-            // btn_Start
+            // Btn_Start
             // 
-            this.btn_Start.Location = new System.Drawing.Point(316, 68);
-            this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Size = new System.Drawing.Size(75, 23);
-            this.btn_Start.TabIndex = 4;
-            this.btn_Start.Text = "Start";
-            this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            this.Btn_Start.Location = new System.Drawing.Point(316, 68);
+            this.Btn_Start.Name = "Btn_Start";
+            this.Btn_Start.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Start.TabIndex = 4;
+            this.Btn_Start.Text = "Start";
+            this.Btn_Start.UseVisualStyleBackColor = true;
+            this.Btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
             // 
             // CB_Recursive
             // 
@@ -143,17 +146,45 @@
             this.CB_File.UseVisualStyleBackColor = true;
             this.CB_File.CheckedChanged += new System.EventHandler(this.CB_File_CheckedChanged);
             // 
+            // Worker
+            // 
+            this.Worker.WorkerReportsProgress = true;
+            this.Worker.WorkerSupportsCancellation = true;
+            this.Worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
+            this.Worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            this.Worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
+            // 
+            // Btn_Stop
+            // 
+            this.Btn_Stop.Enabled = false;
+            this.Btn_Stop.Location = new System.Drawing.Point(316, 97);
+            this.Btn_Stop.Name = "Btn_Stop";
+            this.Btn_Stop.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Stop.TabIndex = 4;
+            this.Btn_Stop.Text = "Stop";
+            this.Btn_Stop.UseVisualStyleBackColor = true;
+            this.Btn_Stop.Click += new System.EventHandler(this.Btn_Stop_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(15, 97);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(295, 23);
+            this.progressBar1.TabIndex = 10;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(404, 103);
+            this.ClientSize = new System.Drawing.Size(404, 132);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.CB_File);
             this.Controls.Add(this.CB_Box);
             this.Controls.Add(this.CB_Recursive);
-            this.Controls.Add(this.btn_Start);
+            this.Controls.Add(this.Btn_Stop);
+            this.Controls.Add(this.Btn_Start);
             this.Controls.Add(this.Btn_Output);
             this.Controls.Add(this.Btn_Input);
             this.Controls.Add(this.lb_output);
@@ -179,11 +210,14 @@
         private System.Windows.Forms.Label lb_output;
         private System.Windows.Forms.Button Btn_Input;
         private System.Windows.Forms.Button Btn_Output;
-        private System.Windows.Forms.Button btn_Start;
+        private System.Windows.Forms.Button Btn_Start;
         private System.Windows.Forms.CheckBox CB_Recursive;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox CB_Box;
         private System.Windows.Forms.CheckBox CB_File;
+        private System.ComponentModel.BackgroundWorker Worker;
+        private System.Windows.Forms.Button Btn_Stop;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

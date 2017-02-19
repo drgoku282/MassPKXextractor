@@ -11,6 +11,12 @@ namespace MassPKXextractor
 {
     public partial class MainForm : Form
     {
+        string FolderIn;
+        string FolderOut;
+        int totalsaves;
+        int currentsave;
+        IEnumerable<string> SaveList;
+
         public MainForm()
         {
             InitializeComponent();
@@ -65,8 +71,8 @@ namespace MassPKXextractor
             try
             {
                 // Check if input and output folders exist
-                string FolderIn = TB_Input.Text;
-                string FolderOut = TB_Output.Text;
+                FolderIn = TB_Input.Text;
+                FolderOut = TB_Output.Text;
                 if (!Directory.Exists(FolderIn))
                 {
                     MessageBox.Show("The input folder is invalid or does not exist.", "Invalid Folder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -79,7 +85,7 @@ namespace MassPKXextractor
                 }
 
                 // Search for save files
-                IEnumerable<string> SaveList;
+                SaveList = null;
                 if (!SAVUtil.getSavesFromFolder(FolderIn, CB_Recursive.Checked, out SaveList))
                 {
                     MessageBox.Show("A error has ocurred:\r\n\r\n" + SaveList.First(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -91,25 +97,16 @@ namespace MassPKXextractor
                     return;
                 }
 
-                // All files 
-                foreach (var file in SaveList)
+                totalsaves = SaveList.Count();
+                progressBar1.Value = 0;
+                Btn_Stop.Enabled = true;
+                Btn_Start.Enabled = false;
+
+                if (Worker.IsBusy != true)
                 {
-                    string result;
-                    string finalpath;
-                    SaveFile SAV = SaveUtil.getVariantSAV(File.ReadAllBytes(file));
-                    if (CB_File.Checked)
-                    {
-                        finalpath = getNextFolderName(FolderOut, SAV);
-                    }
-                    else
-                    {
-                        finalpath = FolderOut;
-                    }
-                    Directory.CreateDirectory(finalpath); // Make sure out directory exists
-                    SAVUtil.dumpBoxes(SAV, finalpath, out result, CB_Box.Checked);
+                    Worker.RunWorkerAsync();
                 }
 
-                MessageBox.Show(SaveList.Count().ToString() + " save files processed correctly", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -146,6 +143,51 @@ namespace MassPKXextractor
             {
                 CB_Box.Checked = false;
             }
+        }
+
+        private void Btn_Stop_Click(object sender, EventArgs e)
+        {
+            Worker.CancelAsync();
+        }
+
+        private void Worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            // Process all save files
+            currentsave = 0;
+            foreach (var file in SaveList)
+            {
+                if (Worker.CancellationPending)
+                {
+                    break;
+                }
+                string result;
+                string finalpath;
+                SaveFile SAV = SaveUtil.getVariantSAV(File.ReadAllBytes(file));
+                if (CB_File.Checked)
+                {
+                    finalpath = getNextFolderName(FolderOut, SAV);
+                }
+                else
+                {
+                    finalpath = FolderOut;
+                }
+                Directory.CreateDirectory(finalpath); // Make sure out directory exists
+                SAVUtil.dumpBoxes(SAV, finalpath, out result, CB_Box.Checked);
+                currentsave++;
+                Worker.ReportProgress(currentsave * 100 / totalsaves);
+            }
+        }
+
+        private void Worker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show(currentsave + " save files processed correctly", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Btn_Stop.Enabled = false;
+            Btn_Start.Enabled = true;
         }
     }
 }
