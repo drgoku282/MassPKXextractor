@@ -72,17 +72,9 @@ namespace MassPKXextractor
             {
                 Settings.Default.InputFolder = TB_Input.Text;
             }
-            else
-            {
-                Settings.Default.InputFolder = Application.StartupPath;
-            }
             if (Directory.Exists(TB_Output.Text))
             {
-                Settings.Default.OutputFolder = Settings.Default.OutputFolder;
-            }
-            else
-            {
-                Settings.Default.OutputFolder = Application.StartupPath;
+                Settings.Default.OutputFolder = TB_Output.Text;
             }
             Settings.Default.CheckRecursive = CB_Recursive.Checked;
             Settings.Default.CheckFile = CB_File.Checked;
