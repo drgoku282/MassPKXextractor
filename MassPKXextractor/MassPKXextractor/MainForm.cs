@@ -13,6 +13,7 @@ namespace MassPKXextractor
     {
         string FolderIn;
         string FolderOut;
+        List<string> invalidSaves;
         int totalsaves;
         int currentsave;
         IEnumerable<string> SaveList;
@@ -162,7 +163,7 @@ namespace MassPKXextractor
         {
             string foldername = Path.GetFileNameWithoutExtension(Util.CleanFileName(SAV.BAKName));
             return Path.Combine(parent, foldername.Substring(foldername.IndexOf('[') + 1, foldername.Length - 3));
-    }
+        }
 
         private void CB_Box_CheckedChanged(object sender, EventArgs e)
         {
@@ -187,29 +188,42 @@ namespace MassPKXextractor
 
         private void Worker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            // Process all save files
-            currentsave = 0;
-            foreach (var file in SaveList)
+            try
             {
-                if (Worker.CancellationPending)
+                // Process all save files
+                currentsave = 0;
+                invalidSaves = new List<string> { };
+                foreach (var file in SaveList)
                 {
-                    break;
+                    if (Worker.CancellationPending)
+                    {
+                        break;
+                    }
+                    string result;
+                    string finalpath;
+                    SaveFile SAV = SaveUtil.getVariantSAV(File.ReadAllBytes(file));
+                    if (SAV == null)
+                    {
+                        invalidSaves.Add(file);
+                        continue;
+                    }
+                    if (CB_File.Checked)
+                    {
+                        finalpath = getFolderName(FolderOut, SAV);
+                    }
+                    else
+                    {
+                        finalpath = FolderOut;
+                    }
+                    Directory.CreateDirectory(finalpath); // Make sure out directory exists
+                    SAVUtil.dumpBoxes(SAV, finalpath, out result, CB_Box.Checked);
+                    currentsave++;
+                    Worker.ReportProgress(currentsave * 100 / totalsaves);
                 }
-                string result;
-                string finalpath;
-                SaveFile SAV = SaveUtil.getVariantSAV(File.ReadAllBytes(file));
-                if (CB_File.Checked)
-                {
-                    finalpath = getFolderName(FolderOut, SAV);
-                }
-                else
-                {
-                    finalpath = FolderOut;
-                }
-                Directory.CreateDirectory(finalpath); // Make sure out directory exists
-                SAVUtil.dumpBoxes(SAV, finalpath, out result, CB_Box.Checked);
-                currentsave++;
-                Worker.ReportProgress(currentsave * 100 / totalsaves);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("A error has ocurred:\r\n\r\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -220,7 +234,15 @@ namespace MassPKXextractor
 
         private void Worker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show(currentsave + " save files processed correctly", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (invalidSaves.Count > 0)
+            {
+                string invalidlist = string.Join("\r\n", invalidSaves.ToArray());
+                MessageBox.Show(currentsave + " save files processed correctly. This program was unable to read data from the following files:\r\n\r\n" + invalidlist, "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show(currentsave + " save files processed correctly.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             EnableControls();
         }
 
