@@ -114,20 +114,11 @@ namespace MassPKXextractor
             }
         }
 
-        private string getNextFolderName(string parent, SaveFile SAV)
+        private string getFolderName(string parent, SaveFile SAV)
         {
-            // Common variables
-            int index = 0;
-            string savename = $"{SAV.OT} ({SAV.Version})";
-            // Check if simple folder name is available
-            string current = Path.Combine(parent, savename);
-            while (Directory.Exists(current))
-            {
-                index++;
-                current = Path.Combine(parent, savename + " (" + index + ")");
-            }
-            return current;
-        }
+            string foldername = Path.GetFileNameWithoutExtension(Util.CleanFileName(SAV.BAKName));
+            return Path.Combine(parent, foldername.Substring(foldername.IndexOf('[') + 1, foldername.Length - 3));
+    }
 
         private void CB_Box_CheckedChanged(object sender, EventArgs e)
         {
@@ -165,7 +156,7 @@ namespace MassPKXextractor
                 SaveFile SAV = SaveUtil.getVariantSAV(File.ReadAllBytes(file));
                 if (CB_File.Checked)
                 {
-                    finalpath = getNextFolderName(FolderOut, SAV);
+                    finalpath = getFolderName(FolderOut, SAV);
                 }
                 else
                 {
