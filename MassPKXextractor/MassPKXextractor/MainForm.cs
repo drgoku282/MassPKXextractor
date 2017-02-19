@@ -205,6 +205,8 @@ namespace MassPKXextractor
                     if (SAV == null)
                     {
                         invalidSaves.Add(file);
+                        currentsave++;
+                        Worker.ReportProgress(currentsave * 100 / totalsaves);
                         continue;
                     }
                     if (CB_File.Checked)
