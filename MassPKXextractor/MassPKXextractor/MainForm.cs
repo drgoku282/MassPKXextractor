@@ -223,5 +223,30 @@ namespace MassPKXextractor
             MessageBox.Show(currentsave + " save files processed correctly", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
             EnableControls();
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Worker.IsBusy)
+            {
+                DialogResult result = MessageBox.Show("There is a extraction operation in progress, do you want to enforce it to stop?", "Stop operation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    SaveSettings();
+                }
+                if (result == DialogResult.No)
+                {
+                    Worker.CancelAsync();
+                    e.Cancel = true;
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                SaveSettings();
+            }
+        }
     }
 }

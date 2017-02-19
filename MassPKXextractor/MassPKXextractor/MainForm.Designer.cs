@@ -196,6 +196,7 @@
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 6, 6);
             this.Text = "Mass PKX Extractor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
