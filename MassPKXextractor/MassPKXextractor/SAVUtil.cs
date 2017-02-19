@@ -46,6 +46,7 @@ namespace MassPKXextractor
                 case SaveUtil.SIZE_G3RAWHALF:
 
                 case SaveUtil.SIZE_G4RAW: // Gen4/5
+                case SaveUtil.SIZE_G4RAW + 0x7A: // Adds DSV footer
 
                 case SaveUtil.SIZE_G6XY:
                 case SaveUtil.SIZE_G6ORASDEMO:
