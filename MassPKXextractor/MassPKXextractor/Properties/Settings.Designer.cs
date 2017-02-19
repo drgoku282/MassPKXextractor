@@ -46,5 +46,41 @@ namespace MassPKXextractor.Properties {
                 this["OutputFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckRecursive {
+            get {
+                return ((bool)(this["CheckRecursive"]));
+            }
+            set {
+                this["CheckRecursive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckFile {
+            get {
+                return ((bool)(this["CheckFile"]));
+            }
+            set {
+                this["CheckFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckBox {
+            get {
+                return ((bool)(this["CheckBox"]));
+            }
+            set {
+                this["CheckBox"] = value;
+            }
+        }
     }
 }

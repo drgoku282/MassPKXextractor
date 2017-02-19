@@ -16,10 +16,12 @@ namespace MassPKXextractor
         int totalsaves;
         int currentsave;
         IEnumerable<string> SaveList;
+        Control[] disableWhenWorking;
 
         public MainForm()
         {
             InitializeComponent();
+            disableWhenWorking = new Control[] { TB_Input, Btn_Input, TB_Output, Btn_Output, CB_Recursive, CB_File, CB_Box, Btn_Start };
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -40,6 +42,51 @@ namespace MassPKXextractor
             {
                 TB_Output.Text = Application.StartupPath;
             }
+            CB_Recursive.Checked = Settings.Default.CheckRecursive;
+            CB_File.Checked = Settings.Default.CheckFile;
+            CB_Box.Checked = Settings.Default.CheckBox;
+        }
+
+        private void DisableControls()
+        {
+            foreach (Control c in disableWhenWorking)
+            {
+                c.Enabled = false;
+            }
+            Btn_Stop.Enabled = true;
+        }
+
+        private void EnableControls()
+        {
+            foreach (Control c in disableWhenWorking)
+            {
+                c.Enabled = true;
+            }
+            Btn_Stop.Enabled = false;
+        }
+
+        private void SaveSettings()
+        {
+            if (Directory.Exists(TB_Input.Text))
+            {
+                Settings.Default.InputFolder = TB_Input.Text;
+            }
+            else
+            {
+                Settings.Default.InputFolder = Application.StartupPath;
+            }
+            if (Directory.Exists(TB_Output.Text))
+            {
+                Settings.Default.OutputFolder = Settings.Default.OutputFolder;
+            }
+            else
+            {
+                Settings.Default.OutputFolder = Application.StartupPath;
+            }
+            Settings.Default.CheckRecursive = CB_Recursive.Checked;
+            Settings.Default.CheckFile = CB_File.Checked;
+            Settings.Default.CheckBox = CB_Box.Checked;
+            Settings.Default.Save();
         }
 
         private void Btn_Input_Click(object sender, EventArgs e)
@@ -49,8 +96,6 @@ namespace MassPKXextractor
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 TB_Input.Text = dialog.FileName;
-                Settings.Default.InputFolder = dialog.FileName;
-                Settings.Default.Save();
             }
         }
 
@@ -61,8 +106,6 @@ namespace MassPKXextractor
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 TB_Output.Text = dialog.FileName;
-                Settings.Default.OutputFolder = dialog.FileName;
-                Settings.Default.Save();
             }
         }
 
@@ -70,9 +113,10 @@ namespace MassPKXextractor
         {
             try
             {
-                // Check if input and output folders exist
+                // Get settings and check folders
                 FolderIn = TB_Input.Text;
                 FolderOut = TB_Output.Text;
+                bool Recursive = CB_Recursive.Checked;
                 if (!Directory.Exists(FolderIn))
                 {
                     MessageBox.Show("The input folder is invalid or does not exist.", "Invalid Folder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -99,8 +143,8 @@ namespace MassPKXextractor
 
                 totalsaves = SaveList.Count();
                 progressBar1.Value = 0;
-                Btn_Stop.Enabled = true;
-                Btn_Start.Enabled = false;
+                DisableControls();
+                SaveSettings();
 
                 if (Worker.IsBusy != true)
                 {
@@ -177,8 +221,7 @@ namespace MassPKXextractor
         private void Worker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             MessageBox.Show(currentsave + " save files processed correctly", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Btn_Stop.Enabled = false;
-            Btn_Start.Enabled = true;
+            EnableControls();
         }
     }
 }
