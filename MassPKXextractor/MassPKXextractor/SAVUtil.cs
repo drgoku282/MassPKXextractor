@@ -40,19 +40,41 @@ namespace MassPKXextractor
         {
             switch (size)
             {
+                // Gen 1
                 case SaveUtil.SIZE_G1RAW:
-
+                case SaveUtil.SIZE_G1BAT:
+                // Gen 2
+                // case SaveUtil.SIZE_G2RAW_J: Same as SIZE_G3RAWHALF
+                // case SaveUtil.SIZE_G2RAW_U: Same as SIZE_G1RAW
+                case SaveUtil.SIZE_G2BAT_J:
+                // case SaveUtil.SIZE_G2BAT_U: Same as SIZE_G1BAT
+                case SaveUtil.SIZE_G2EMU:
+                case SaveUtil.SIZE_G2VC:
+                // Gen 3
                 case SaveUtil.SIZE_G3RAW:
                 case SaveUtil.SIZE_G3RAWHALF:
-
-                case SaveUtil.SIZE_G4RAW: // Gen4/5
-                case SaveUtil.SIZE_G4RAW + 0x7A: // Adds DSV footer
-
+                // Gen 4
+                case SaveUtil.SIZE_G4RAW:
+                case SaveUtil.SIZE_G4RAW + 0x7A:
+                // Gen 5
+                // case SaveUtil.SIZE_G4RAW: Same as SIZE_G4RAW
+                // Gen 6
                 case SaveUtil.SIZE_G6XY:
                 case SaveUtil.SIZE_G6ORASDEMO:
                 case SaveUtil.SIZE_G6ORAS:
-
+                // Gen 7
                 case SaveUtil.SIZE_G7SM:
+                // Colosseum
+                case SaveUtil.SIZE_G3COLO:
+                case SaveUtil.SIZE_G3COLOGCI:
+                // XD
+                case SaveUtil.SIZE_G3XD:
+                case SaveUtil.SIZE_G3XDGCI:
+                // Box RS
+                // case SaveUtil.SIZE_G3BOX: SIZE_G6ORAS
+                case SaveUtil.SIZE_G3BOXGCI:
+                // Battle Revolution
+                case SaveUtil.SIZE_G4BR:
                     return true;
                 default:
                     return false;
