@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace MassPKXextractor
@@ -14,6 +15,7 @@ namespace MassPKXextractor
         string FolderIn;
         string FolderOut;
         List<string> invalidSaves;
+        List<string> validSaves;
         int totalsaves;
         int currentsave;
         IEnumerable<string> SaveList;
@@ -185,6 +187,7 @@ namespace MassPKXextractor
                 // Process all save files
                 currentsave = 0;
                 invalidSaves = new List<string> { };
+                validSaves = new List<string> { };
                 foreach (var file in SaveList)
                 {
                     if (Worker.CancellationPending)
@@ -201,6 +204,7 @@ namespace MassPKXextractor
                         Worker.ReportProgress(currentsave * 100 / totalsaves);
                         continue;
                     }
+                    validSaves.Add(file);
                     if (CB_File.Checked)
                     {
                         finalpath = getFolderName(FolderOut, SAV);
@@ -228,14 +232,49 @@ namespace MassPKXextractor
 
         private void Worker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
+            // Build log
+            var sb = new StringBuilder();
+            sb.AppendLine("Start MassPKMextractor Log" + Environment.NewLine);
+            sb.AppendLine("Date: " + DateTime.Now);
+            sb.AppendLine("Saves processed: " + totalsaves + Environment.NewLine);
+            sb.AppendLine("Valid saves:");
+            foreach (string sav in validSaves) sb.AppendLine(sav);
+            sb.AppendLine(Environment.NewLine + "Invalid saves");
+            foreach (string sav in invalidSaves) sb.AppendLine(sav);
+            sb.AppendLine(Environment.NewLine + "End MassPKMextractor Log");
+
+            string logpath = Application.StartupPath;
+            DialogResult logwrite = DialogResult.Yes;
+            while (logwrite != DialogResult.Cancel)
+            {
+                try
+                {
+                    File.WriteAllText(Path.Combine(logpath, "MassPKMextractorLog-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt"), sb.ToString());
+                    logwrite = DialogResult.Cancel;
+                }
+                catch (Exception ex)
+                {
+                    logwrite = MessageBox.Show("A error ocurred while saving log:\r\n" + ex.Message + "\r\nDo you want to save it in another location?", "MassPKMextractor", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                    if (logwrite == DialogResult.Yes)
+                    {
+                        var dialog = new CommonOpenFileDialog();
+                        dialog.IsFolderPicker = true;
+                        if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                        {
+                            logpath = dialog.FileName;
+                        }
+                    }
+                }
+            }
+
             if (invalidSaves.Count > 0)
             {
                 string invalidlist = string.Join("\r\n", invalidSaves.ToArray());
-                MessageBox.Show(currentsave + " save files processed correctly. This program was unable to read data from the following files:\r\n\r\n" + invalidlist, "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"{validSaves.Count} save files processed correctly.\r\n{invalidSaves.Count} saves were not processed, see log for details.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                MessageBox.Show(currentsave + " save files processed correctly.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(validSaves.Count + " save files processed correctly.", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             EnableControls();
         }
